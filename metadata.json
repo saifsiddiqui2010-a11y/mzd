@@ -1,0 +1,6 @@
+{
+  "name": "MZD Perfumes",
+  "description": "Luxury haute parfumerie storefront for MZD Perfumes featuring secure checkout, customer accounts, real-time order tracking, and a dedicated admin operations dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

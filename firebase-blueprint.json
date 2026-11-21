@@ -1,0 +1,252 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A luxury fragrance offered by MZD Perfumes.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "slug": { "type": "string", "minLength": 1, "maxLength": 100, "pattern": "^[a-z0-9-]+$" },
+        "subtitle": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "category": { "type": "string", "enum": ["Oud & Wood", "Floral", "Amber & Spice", "Fresh Citrus"] },
+        "concentration": { "type": "string", "enum": ["Extrait de Parfum", "Eau de Parfum", "Parfum Intense"] },
+        "price50ml": { "type": "number" },
+        "price100ml": { "type": "number" },
+        "stock": { "type": "number" },
+        "featured": { "type": "boolean" },
+        "active": { "type": "boolean" },
+        "imageUrl": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 1500 },
+        "topNotes": { "type": "array" },
+        "heartNotes": { "type": "array" },
+        "baseNotes": { "type": "array" },
+        "longevityHours": { "type": "number" },
+        "sillage": { "type": "string", "enum": ["Intimate", "Moderate", "Strong", "Enormous"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "name",
+        "slug",
+        "subtitle",
+        "category",
+        "concentration",
+        "price50ml",
+        "price100ml",
+        "stock",
+        "featured",
+        "active",
+        "imageUrl",
+        "description",
+        "topNotes",
+        "heartNotes",
+        "baseNotes",
+        "longevityHours",
+        "sillage",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private customer profile with saved shipping preferences (PII isolated).",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "email": { "type": "string", "minLength": 3, "maxLength": 200 },
+        "phone": { "type": "string", "minLength": 0, "maxLength": 30 },
+        "addressLine": { "type": "string", "minLength": 0, "maxLength": 200 },
+        "city": { "type": "string", "minLength": 0, "maxLength": 100 },
+        "postalCode": { "type": "string", "minLength": 0, "maxLength": 24 },
+        "country": { "type": "string", "minLength": 0, "maxLength": 80 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "email",
+        "phone",
+        "addressLine",
+        "city",
+        "postalCode",
+        "country",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "WishlistItem": {
+      "title": "WishlistItem",
+      "description": "Saved fragrance reference belonging to a user account.",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "addedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "userId", "addedAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer fragrance order with payment metadata, shipping details, and live tracking events (PII isolated to owner and admin).",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string", "minLength": 10, "maxLength": 24, "pattern": "^MZD-[0-9]{4}-[A-Z0-9]{4,8}$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "customerEmail": { "type": "string", "minLength": 3, "maxLength": 200 },
+        "customerPhone": { "type": "string", "minLength": 4, "maxLength": 30 },
+        "shippingAddress": { "type": "string", "minLength": 5, "maxLength": 300 },
+        "shippingCity": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "shippingPostalCode": { "type": "string", "minLength": 2, "maxLength": 24 },
+        "shippingCountry": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "discount": { "type": "number" },
+        "shippingFee": { "type": "number" },
+        "total": { "type": "number" },
+        "promoCode": { "type": "string", "minLength": 0, "maxLength": 32 },
+        "paymentMethod": { "type": "string", "enum": ["card", "apple_pay", "cod"] },
+        "paymentStatus": { "type": "string", "enum": ["paid", "pending_cod", "refunded"] },
+        "paymentLast4": { "type": "string", "minLength": 0, "maxLength": 4 },
+        "paymentBrand": { "type": "string", "minLength": 0, "maxLength": 30 },
+        "paymentAuthCode": { "type": "string", "minLength": 0, "maxLength": 40 },
+        "status": { "type": "string", "enum": ["confirmed", "compounding", "packed", "shipped", "delivered", "cancelled"] },
+        "carrier": { "type": "string", "minLength": 0, "maxLength": 60 },
+        "trackingCode": { "type": "string", "minLength": 0, "maxLength": 60 },
+        "estimatedDelivery": { "type": "string", "minLength": 0, "maxLength": 40 },
+        "trackingEvents": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "orderNumber",
+        "userId",
+        "customerName",
+        "customerEmail",
+        "customerPhone",
+        "shippingAddress",
+        "shippingCity",
+        "shippingPostalCode",
+        "shippingCountry",
+        "items",
+        "subtotal",
+        "discount",
+        "shippingFee",
+        "total",
+        "promoCode",
+        "paymentMethod",
+        "paymentStatus",
+        "paymentLast4",
+        "paymentBrand",
+        "paymentAuthCode",
+        "status",
+        "carrier",
+        "trackingCode",
+        "estimatedDelivery",
+        "trackingEvents",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "OrderTracking": {
+      "title": "OrderTracking",
+      "description": "PII-free real-time shipment tracking mirror keyed by exact orderNumber.",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string", "minLength": 10, "maxLength": 24, "pattern": "^MZD-[0-9]{4}-[A-Z0-9]{4,8}$" },
+        "orderId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "status": { "type": "string", "enum": ["confirmed", "compounding", "packed", "shipped", "delivered", "cancelled"] },
+        "carrier": { "type": "string", "minLength": 0, "maxLength": 60 },
+        "trackingCode": { "type": "string", "minLength": 0, "maxLength": 60 },
+        "estimatedDelivery": { "type": "string", "minLength": 0, "maxLength": 40 },
+        "destinationCity": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "itemCount": { "type": "number" },
+        "trackingEvents": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "orderNumber",
+        "orderId",
+        "userId",
+        "status",
+        "carrier",
+        "trackingCode",
+        "estimatedDelivery",
+        "destinationCity",
+        "itemCount",
+        "trackingEvents",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Promotion": {
+      "title": "Promotion",
+      "description": "Storefront discount promo code managed by administrators.",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string", "minLength": 2, "maxLength": 32, "pattern": "^[A-Z0-9_-]+$" },
+        "discountPercent": { "type": "number" },
+        "minOrderAmount": { "type": "number" },
+        "active": { "type": "boolean" },
+        "description": { "type": "string", "minLength": 1, "maxLength": 140 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "code",
+        "discountPercent",
+        "minOrderAmount",
+        "active",
+        "description",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "AdminMember": {
+      "title": "AdminMember",
+      "description": "Trusted administrator membership document for RBAC verification.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "minLength": 3, "maxLength": 200 },
+        "grantedBy": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "grantedBy", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Publicly readable MZD Perfumes catalog; writes restricted to verified admins."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private customer profile storing saved shipping details; isolated to owner and admin."
+    },
+    "/users/{userId}/wishlist/{productId}": {
+      "schema": { "$ref": "#/entities/WishlistItem" },
+      "description": "Customer saved fragrances subcollection guarded by parent user profile existence."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Full customer orders with PII and payment details; strictly owner and admin accessible."
+    },
+    "/orderTracking/{orderNumber}": {
+      "schema": { "$ref": "#/entities/OrderTracking" },
+      "description": "PII-free real-time order tracking mirror keyed by orderNumber, synchronized atomically with orders."
+    },
+    "/promotions/{promoCode}": {
+      "schema": { "$ref": "#/entities/Promotion" },
+      "description": "Promo codes lookup by exact code for customers; full management restricted to admins."
+    },
+    "/admins/{userId}": {
+      "schema": { "$ref": "#/entities/AdminMember" },
+      "description": "Trusted RBAC administrator registry."
+    }
+  }
+}
